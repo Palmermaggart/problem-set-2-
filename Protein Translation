@@ -1,0 +1,57 @@
+public class ProteinTranslation {
+
+    public static String prot(String rna) {
+
+        Map<String, String> pattern = new HashMap<>();
+
+        pattern.put("UUU", "F"); pattern.put("CUU", "L"); pattern.put("AUU", "I"); pattern.put("GUU", "V");
+        pattern.put("UUC", "F"); pattern.put("CUC", "L"); pattern.put("AUC", "I"); pattern.put("GUC", "V");
+        pattern.put("UUA", "L"); pattern.put("CUA", "L"); pattern.put("AUA", "I"); pattern.put("GUA", "V");
+        pattern.put("UUG", "L"); pattern.put("CUG", "L"); pattern.put("AUG", "M"); pattern.put("GUG", "V");
+
+        pattern.put("UCU", "S"); pattern.put("CCU", "P"); pattern.put("ACU", "T"); pattern.put("GCU", "A");
+        pattern.put("UCC", "S"); pattern.put("CCC", "P"); pattern.put("ACC", "T"); pattern.put("GCC", "A");
+        pattern.put("UCA", "S"); pattern.put("CCA", "P"); pattern.put("ACA", "T"); pattern.put("GCA", "A");
+        pattern.put("UCG", "S"); pattern.put("CCG", "P"); pattern.put("ACG", "T"); pattern.put("GCG", "A");
+
+        pattern.put("UAU", "Y"); pattern.put("CAU", "H"); pattern.put("AAU", "N"); pattern.put("GAU", "D");
+        pattern.put("UAC", "Y"); pattern.put("CAC", "H"); pattern.put("AAC", "N"); pattern.put("GAC", "D");
+
+        pattern.put("UAA", "*"); pattern.put("UAG", "*"); pattern.put("UGA", "*");
+
+        pattern.put("CAA", "Q"); pattern.put("AAA", "K"); pattern.put("GAA", "E");
+        pattern.put("CAG", "Q"); pattern.put("AAG", "K"); pattern.put("GAG", "E");
+
+        pattern.put("UGU", "C"); pattern.put("CGU", "R"); pattern.put("AGU", "S"); pattern.put("GGU", "G");
+        pattern.put("UGC", "C"); pattern.put("CGC", "R"); pattern.put("AGC", "S"); pattern.put("GGC", "G");
+        pattern.put("CGA", "R"); pattern.put("AGA", "R"); pattern.put("GGA", "G");
+        pattern.put("UGG", "W"); pattern.put("CGG", "R"); pattern.put("AGG", "R"); pattern.put("GGG", "G");
+
+        StringBuilder result = new StringBuilder();
+
+        for (int i = 0; i <= rna.length() - 3; i += 3) {
+
+            String codon = rna.substring(i, i + 3);
+            String amino = pattern.get(codon);
+
+            if (amino.equals("*")) {
+                break;   // stop at STOP codon
+            }
+
+            result.append(amino);
+        }
+
+        return result.toString();
+    }
+
+    public static void main(String[] args) throws IOException {
+
+        BufferedReader br = new BufferedReader(
+                new FileReader("../data/rosalind_prot.txt"));
+
+        String rna = br.readLine().trim();
+        br.close();
+
+        System.out.println(prot(rna));
+    }
+}
